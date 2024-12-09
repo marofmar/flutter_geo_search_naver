@@ -16,6 +16,11 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
+  String removeHtmlTags(String text) {
+    final RegExp exp = RegExp(r'<[^>]*>');
+    return text.replaceAll(exp, '');
+  }
+
   // 검색 함수
   void onSearch(String text) {
     // TODO 홈뷰모델의 searchLocations 메서드 호출
@@ -73,29 +78,27 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ),
         body: homeState.locations.isEmpty
-            ? Center(child: Text('엥..'))
-            : Text(
-                homeState.locations
-                    .map((e) => e.toJson().toString())
-                    .join("\n\n"),
+            ? Center(
+                child: Text(
+                '엥..텅,,! 비었어요.',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ))
+            : ListView.builder(
+                itemCount: homeState.locations.length,
+                itemBuilder: (context, index) {
+                  final location = homeState.locations[index];
+                  return ListTile(
+                    title: Text(removeHtmlTags(location.title)),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(location.category),
+                        Text(location.address),
+                      ],
+                    ),
+                  );
+                },
               ),
-        // body: Text('hello')
-        // body: ListView.builder(
-        //   itemCount: homeState.locations.length,
-        //   itemBuilder: (context, index) {
-        //     final location = homeState.locations[index];
-        //     return ListTile(
-        //       title: Text(location.title),
-        //       subtitle: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(location.category),
-        //           Text(location.address),
-        //         ],
-        //       ),
-        //     );
-        //   },
-        // ),
       ),
     );
   }
