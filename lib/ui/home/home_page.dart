@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_search_naver/ui/detail/detail_page.dart';
@@ -110,7 +111,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
+                              return CupertinoAlertDialog(
                                   title: Text('유효하지 않은 링크'),
                                   content: Text('네이버로 이동합니다.'),
                                   actions: [
