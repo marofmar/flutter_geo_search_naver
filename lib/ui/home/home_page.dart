@@ -107,12 +107,28 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     onTap: () {
                       if (location.link.isEmpty) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: Text('유효하지 않은 링크'),
+                                  content: Text('네이버로 이동합니다.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => DetailPage(
+                                                    url:
+                                                        "https://www.naver.com")));
+                                      },
+                                      child: Text('확인'),
+                                    )
+                                  ]);
+                            });
                         print('링크 없음. 네이버로 이동');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailPage(url: "https://www.naver.com")));
                       } else {
                         Navigator.push(
                             context,
