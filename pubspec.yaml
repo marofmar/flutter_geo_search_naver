@@ -39,6 +39,7 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   flutter_dotenv: ^5.2.1
   dio: ^5.7.0
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:

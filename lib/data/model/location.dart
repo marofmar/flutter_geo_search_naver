@@ -22,7 +22,7 @@ class Location {
   String title;
   String category;
   String address;
-  String? link;
+  String link;
 
   Location({
     required this.title,

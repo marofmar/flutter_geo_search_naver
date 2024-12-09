@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geo_search_naver/ui/detail/detail_page.dart';
 import 'package:geo_search_naver/ui/home/home_view_model.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   @override
@@ -16,9 +18,16 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
-  String removeHtmlTags(String text) {
+  // HTML 태그 제거, HTML entity 중 '&amp' 처리하는 함수
+  String processTitle(String text) {
+    final unescape = HtmlUnescape(); // unescape.convert(text);
     final RegExp exp = RegExp(r'<[^>]*>');
-    return text.replaceAll(exp, '');
+    String woTags = text.replaceAll(exp, '');
+    if (woTags.contains('&')) {
+      return unescape.convert(woTags);
+    } else {
+      return text.replaceAll(exp, '');
+    }
   }
 
   // 검색 함수
@@ -88,7 +97,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 itemBuilder: (context, index) {
                   final location = homeState.locations[index];
                   return ListTile(
-                    title: Text(removeHtmlTags(location.title)),
+                    title: Text(processTitle(location.title)),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -96,6 +105,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                         Text(location.address),
                       ],
                     ),
+                    onTap: () {
+                      if (location.link.isEmpty) {
+                        print('링크 없음. 네이버로 이동');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailPage(url: "https://www.naver.com")));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailPage(url: location.link)));
+                      }
+                    },
                   );
                 },
               ),
