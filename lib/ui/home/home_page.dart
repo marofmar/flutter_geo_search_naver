@@ -93,53 +93,72 @@ class _HomePageState extends ConsumerState<HomePage> {
                 '엥..텅,,! 비었어요.',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ))
-            : ListView.builder(
-                itemCount: homeState.locations.length,
-                itemBuilder: (context, index) {
-                  final location = homeState.locations[index];
-                  return ListTile(
-                    title: Text(processTitle(location.title)),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(location.category),
-                        Text(location.address),
-                      ],
-                    ),
-                    onTap: () {
-                      if (location.link.isEmpty) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CupertinoAlertDialog(
-                                  title: Text('유효하지 않은 링크'),
-                                  content: Text('네이버로 이동합니다.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => DetailPage(
-                                                    url:
-                                                        "https://www.naver.com")));
-                                      },
-                                      child: Text('확인'),
-                                    )
-                                  ]);
-                            });
-                        print('링크 없음. 네이버로 이동');
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailPage(url: location.link)));
-                      }
-                    },
-                  );
-                },
+            : Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: ListView.builder(
+                  itemCount: homeState.locations.length,
+                  itemBuilder: (context, index) {
+                    final location = homeState.locations[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border:
+                              Border.all(color: Colors.grey.shade300, width: 1),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            processTitle(location.title),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(location.category),
+                              Text(location.address),
+                            ],
+                          ),
+                          onTap: () {
+                            if (location.link.isEmpty) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CupertinoAlertDialog(
+                                        title: Text('유효하지 않은 링크'),
+                                        content: Text('네이버로 이동합니다.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailPage(
+                                                              url:
+                                                                  "https://www.naver.com")));
+                                            },
+                                            child: Text('확인'),
+                                          )
+                                        ]);
+                                  });
+                              print('링크 없음. 네이버로 이동');
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailPage(url: location.link)));
+                            }
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
       ),
     );
